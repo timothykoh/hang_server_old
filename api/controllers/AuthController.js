@@ -7,9 +7,11 @@
 
 module.exports = {
     login: function(req, res){
+        sails.log("Logging in...")
         var FB = require('fb');
 
         var fbAccessToken = req.body.fbAccessToken;
+        sails.log("fbAccessToken", fbAccessToken);
         FB.setAccessToken(fbAccessToken);
         FB.api('/me', {fields : ['id', 'name', 'email']}, function (result) {
             if(!result || result.error) {
@@ -19,6 +21,7 @@ module.exports = {
 
             UserService.getUserByFbId(result.id).then(function(user){
                 if (user == undefined){
+                    sails.log("User doesn't exist, create it");
                     // if user doesn't exist, create it
                     return User.create({
                         "name" : result.name,
@@ -26,6 +29,7 @@ module.exports = {
                         "email" : result.email
                     });
                 } else{
+                    sails.log("User exists");
                     return user;
                 }
             }).then(function(user){
@@ -33,13 +37,20 @@ module.exports = {
                 // either it was in the db or we just created it
                 req.session.user = user;
                 req.session.fbAccessToken = fbAccessToken;
+                req.session.authenticated = true;
+                sails.log("Sending User obj", user);
                 res.send(user);
+            }).catch(function(err){
+                sails.log.error(err);
+                res.send({error: err});
             });
         });
     },
 
     logout: function(req, res){
+        sails.log("Logging out...");
         req.session.destroy();
-        res.send({ success : "Sucessfully logged out"});
+        sails.log("Logout success");
+        res.send({success: "Sucessfully logged out"});
     }
 };

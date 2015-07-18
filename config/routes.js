@@ -35,7 +35,10 @@ module.exports.routes = {
   '/': {
     view: 'homepage'
   },
-  'POST /auth/login': 'AuthController.login'
+  "POST /auth/login": "AuthController.login",
+  "GET /interest": "InterestController.getAllUserInterests",
+  "DELETE /interest/:interestId": "InterestController.deleteUserInterest"
+
 
   /***************************************************************************
   *                                                                          *
