@@ -9,7 +9,8 @@ module.exports = {
 
     attributes: {
         name: "string",
-        fbId: "integer",
+        fbId: "string",
+        email: "string",
         interests: {
             collection: "interest",
             via: "user"
