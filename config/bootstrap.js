@@ -37,6 +37,19 @@ function generateDummyData(){
                 Interest.create({name: "Travel to LA", user: userObj.id}),
                 Interest.create({name: "Explore nyc", user: userObj.id})
             ]);
+        }),
+        User.create({
+            name: "Lily Kwan",
+            fbId: "1243112159",
+            email: "lilykwantest@gmail.com"
+        }).then(function(userObj){
+            sails.log.info("Created user\n", userObj);
+            return Promise.all([
+                Interest.create({name: "Raves", user: userObj.id}),
+                Interest.create({name: "Soccer", user: userObj.id}),
+                Interest.create({name: "Eating", user: userObj.id}),
+                Interest.create({name: "Sleeping", user: userObj.id})
+            ]);
         })
     ]).then(function(results){
         sails.log.info("Created interests\n", results);

@@ -37,7 +37,9 @@ module.exports.routes = {
   },
   "POST /auth/login": "AuthController.login",
 
-  "GET /interest": "InterestController.getAllUserInterests",
+  "GET /interest": "InterestController.getAllSelfInterests",
+  "GET /interest/:interestId": "InterestController.getSelfInterest",
+  "GET /interest/all/user/:userId": "InterestController.getAllUserInterests", 
   "DELETE /interest/:interestId": "InterestController.deleteUserInterest",
 
   "GET /search/users/:searchTerm": "SearchController.users",

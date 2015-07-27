@@ -21,9 +21,32 @@ module.exports = {
             res.send({error: err});
         });
     },
-    
+
     getAllUserInterests: function(req, res){
-        sails.log("Getting all user interest...");
+        sails.log("Getting user interest for user", req.param("userId"), "...");
+        Interest.find({"user": req.param("userId")}).then(function(interests){
+            sails.log("Got all user interests", interests);
+            res.send(interests);
+        }).catch(function(err){
+            sails.log.error(err);
+            res.send({error: err});
+        });
+    },
+    
+    getSelfInterest: function(req, res){
+        sails.log("Getting self interest...");
+        Interest.find({"user": req.session.user.id, "id": req.param("interestId")})
+        .then(function(interest){
+            sails.log("Got self interest", interest);
+            res.send(interest);
+        }).catch(function(err){
+            sails.log.error(err);
+            res.send({error: err});
+        });
+    },
+
+    getAllSelfInterests: function(req, res){
+        sails.log("Getting all self interests...");
         Interest.find({"user": req.session.user.id}).then(function(interests){
             sails.log("Got all interests", interests);
             res.send(interests);
